@@ -1,0 +1,17 @@
+{
+  "users": {
+    "badri": {
+      "username": "badri",
+      "password_hash": "2dad15fa3fd25785$1975113c51073b6961f22770adebd643c5594625f319fe4c2dd312432a7fb73b",
+      "avatar": "",
+      "balance": 0.0,
+      "expenses": {
+        "Travel": [],
+        "Household": [],
+        "Food": [],
+        "Entertainment": []
+      }
+    }
+  },
+  "sessions": {}
+}

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MoneyFlow — Sign In & Register</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-mode">
+
+  <!-- Glowing background blobs for login screen -->
+  <div class="blob b1" id="blob1"></div>
+  <div class="blob b2" id="blob2"></div>
+
+  <!-- ========================================================================
+       VIEW 1: Authentication Screen (Neon Glassmorphism Interface)
+       ======================================================================== -->
+  <div class="wrap" id="auth-view">
+
+    <!-- LEFT: Branding & Visuals -->
+    <section class="brand">
+      <div class="logo">
+        <img src="logo.png" alt="MoneyFlow Logo" class="brand-logo-img">
+        <span>MoneyFlow</span>
+      </div>
+      <h1>Take Control of <em>Your Money.</em></h1>
+      <p class="sub">Track smarter. Spend wiser. Build your financial future.</p>
+
+      <div class="visual" aria-hidden="true">
+        <div class="card-f c1">Income <b class="up">+ ₹45,000</b></div>
+        <div class="card-f c2">Expense <b class="down">− ₹12,480</b></div>
+        <div class="card-f c3">Monthly trend
+          <svg viewBox="0 0 200 50" fill="none">
+            <defs>
+              <linearGradient id="g" x1="0" x2="1">
+                <stop stop-color="#10D9A0"/>
+                <stop offset="1" stop-color="#4D8DFF"/>
+              </linearGradient>
+            </defs>
+            <path d="M0 40 L30 28 L60 34 L95 14 L130 24 L165 8 L200 16" stroke="url(#g)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="features">
+        <div class="feat">
+          <i>✓</i>
+          <div>
+            <h3>Smart Expense Tracking</h3>
+            <p>Manage your daily expenses effortlessly.</p>
+          </div>
+        </div>
+        <div class="feat">
+          <i>📊</i>
+          <div>
+            <h3>Financial Insights</h3>
+            <p>Understand your spending habits.</p>
+          </div>
+        </div>
+        <div class="feat">
+          <i>💼</i>
+          <div>
+            <h3>Better Money Management</h3>
+            <p>Stay organized and make informed decisions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: Auth Glass Card -->
+    <section class="auth">
+      <div class="glass">
+        <!-- Logo placed prominently above the username & title -->
+        <div class="auth-card-logo">
+          <img src="logo.png" alt="MoneyFlow Logo" class="auth-logo-img">
+        </div>
+
+        <!-- LOGIN VIEW -->
+        <div class="view active" id="loginView">
+          <h2>Welcome Back</h2>
+          <p class="hint">Your financial journey continues here.</p>
+          <div class="msg" id="loginMsg"></div>
+          <form id="loginForm" novalidate>
+            <div class="field">
+              <label for="lUser">USERNAME</label>
+              <input id="lUser" autocomplete="username" placeholder="Enter your username" required>
+            </div>
+            <div class="field">
+              <label for="lPass">PASSWORD</label>
+              <input id="lPass" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+              <button type="button" class="eye" data-target="lPass" aria-label="Show or hide password">👁️</button>
+            </div>
+            <button class="btn primary" type="submit">
+              <span class="spinner"></span><span class="txt">Sign In →</span>
+            </button>
+          </form>
+          <button class="btn secondary" type="button" data-go="registerView">Create Account</button>
+        </div>
+
+        <!-- REGISTER VIEW -->
+        <div class="view" id="registerView">
+          <h2>Create Your Account</h2>
+          <p class="hint">Start building better financial habits today.</p>
+          <div class="msg" id="regMsg"></div>
+          <form id="regForm" novalidate>
+            <div class="field">
+              <label for="rUser">USERNAME</label>
+              <input id="rUser" autocomplete="username" placeholder="Choose a username" required>
+              <div class="err" id="rUserErr"></div>
+            </div>
+            <div class="field">
+              <label for="rPass">PASSWORD</label>
+              <input id="rPass" type="password" autocomplete="new-password" placeholder="Create a password (min 6 chars)" required>
+              <button type="button" class="eye" data-target="rPass" aria-label="Show or hide password">👁️</button>
+              <div class="err" id="rPassErr"></div>
+            </div>
+            <div class="field">
+              <label for="rConf">CONFIRM PASSWORD</label>
+              <input id="rConf" type="password" autocomplete="new-password" placeholder="Re-enter your password" required>
+              <button type="button" class="eye" data-target="rConf" aria-label="Show or hide password">👁️</button>
+              <div class="err" id="rConfErr"></div>
+            </div>
+            <button class="btn primary" type="submit">
+              <span class="spinner"></span><span class="txt">Create Account</span>
+            </button>
+          </form>
+          <p class="switch">Already have an account? <a data-go="loginView">Sign in</a></p>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- ========================================================================
+       VIEW 2: Money Tracker Dashboard
+       ======================================================================== -->
+  <div id="tracker-view" class="app" style="display:none;">
+
+    <!-- Top Header -->
+    <header>
+      <a class="logo-mark" href="#" id="logo-link" onclick="event.preventDefault();">
+        <img src="logo.png" alt="MoneyFlow Logo" class="logo-icon-img">
+        <div>
+          <div class="logo-title" id="header-title">MoneyFlow</div>
+        </div>
+      </a>
+      <div class="header-btns">
+        <button class="btn-sm btn-theme" id="themeToggleBtn" title="Toggle Dark/Light Theme">
+          <span id="theme-btn-icon">🌙</span> <span id="theme-btn-text">Dark</span>
+        </button>
+        <button class="btn-sm btn-graph" id="graphBtn" title="View monthly graph and analytics">📊 Monthly Graph</button>
+        <button class="btn-sm btn-reset" id="resetBtn" title="Reset all data">↺ Reset All</button>
+
+        <!-- Profile Avatar & Dropdown -->
+        <div class="profile-wrap" id="profile-wrap">
+          <button class="profile-btn" id="profileBtn" title="View profile and account">
+            <div class="avatar-circle" id="header-avatar">
+              <span id="avatar-initial">U</span>
+              <img id="avatar-img" class="avatar-img" style="display:none;" alt="Profile photo">
+            </div>
+            <span class="profile-name-label" id="profile-name-label">User</span>
+            <span class="profile-caret">▾</span>
+          </button>
+
+          <div class="profile-dropdown" id="profile-dropdown">
+            <div class="profile-card-header">
+              <div class="avatar-large-wrap">
+                <div class="avatar-circle large" id="dropdown-avatar">
+                  <span id="dropdown-avatar-initial">U</span>
+                  <img id="dropdown-avatar-img" class="avatar-img" style="display:none;" alt="Profile photo">
+                </div>
+                <label class="avatar-upload-badge" for="avatar-input" title="Upload new photo">
+                  📷
+                  <input type="file" id="avatar-input" accept="image/*" style="display:none;">
+                </label>
+              </div>
+              <div class="profile-info">
+                <div class="profile-username" id="dropdown-username">User</div>
+                <div class="profile-role">Personal Tracker</div>
+              </div>
+            </div>
+
+            <div class="profile-menu-body">
+              <button class="profile-menu-item" id="change-photo-btn">
+                <span>🖼️</span> Change Photo
+              </button>
+              <button class="profile-menu-item" id="remove-photo-btn" style="display:none; color:#ef4444;">
+                <span>🗑️</span> Remove Photo
+              </button>
+              <button class="profile-menu-item" id="dropdownThemeBtn">
+                <span id="drop-theme-icon">🌙</span> <span id="drop-theme-text">Dark Theme</span>
+              </button>
+              <div class="profile-divider"></div>
+              <button class="profile-menu-item logout" id="logoutBtn">
+                <span>🚪</span> Log Out
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Welcome Greeting Banner Popup -->
+    <div class="welcome-popup" id="welcome-popup">
+      <div class="welcome-popup-left">
+        <div class="welcome-time-tag" id="welcome-time-tag">
+          <span id="welcome-time-emoji">🌞</span> <span id="welcome-time-text">Good Morning!</span> 👋
+        </div>
+        <div class="welcome-title">
+          <img src="logo.png" alt="Logo" class="welcome-mini-logo"> Welcome to MoneyFlow, <span id="welcome-username">User</span> 💰
+        </div>
+        <div class="welcome-subtext">
+          Your money, your goals, your future. ✨
+        </div>
+      </div>
+      <button class="welcome-close-btn" id="welcome-close-btn" title="Dismiss">✕</button>
+    </div>
+
+    <!-- Alert Banner -->
+    <div id="alert-banner">
+      <span class="alert-icon" id="alert-icon"></span>
+      <span id="alert-text"></span>
+      <span class="alert-pct" id="alert-pct"></span>
+    </div>
+
+    <!-- Top Grid: Balance Card + Gauge -->
+    <div class="top-grid">
+
+      <!-- Balance Card -->
+      <div class="card">
+        <div class="section-title">Set Your Budget</div>
+        <div class="input-row">
+          <div class="input-wrap">
+            <span class="input-prefix">₹</span>
+            <input type="number" id="bal-input" min="0" step="0.01" placeholder="Enter your total balance or salary">
+          </div>
+          <button class="btn-primary btn-full" id="bal-btn" style="max-width:140px;padding:11px 18px;border-radius:10px;border:none;font-weight:600;font-size:.92rem;cursor:pointer;">Set Balance</button>
+        </div>
+        <div class="quick-row">
+          <span style="font-size:.75rem;color:#94a3b8;align-self:center;">Quick pick:</span>
+          <button class="qbtn" data-v="5000">₹5K</button>
+          <button class="qbtn" data-v="10000">₹10K</button>
+          <button class="qbtn" data-v="25000">₹25K</button>
+          <button class="qbtn" data-v="50000">₹50K</button>
+          <button class="qbtn" data-v="100000">₹1 Lakh</button>
+        </div>
+        <div class="budget-pills" id="budget-pills" style="display:none">
+          <div class="budget-pill c-indigo"><small>BALANCE</small><div class="pv" id="bp-bal">₹0</div></div>
+          <div class="budget-pill c-rose">  <small>SPENT</small>  <div class="pv" id="bp-spent">₹0</div></div>
+          <div class="budget-pill c-green"> <small>LEFT</small>   <div class="pv" id="bp-left">₹0</div></div>
+        </div>
+      </div>
+
+      <!-- Budget Overview Gauge Card -->
+      <div class="card gauge-card">
+        <div class="section-title" style="text-align:center;margin-bottom:4px;">Budget Overview</div>
+        <div class="gauge">
+          <svg viewBox="0 0 150 150">
+            <circle class="track" cx="75" cy="75" r="62"/>
+            <circle class="fill" id="gauge-fill" cx="75" cy="75" r="62"/>
+          </svg>
+          <div class="gauge-mid">
+            <span class="glbl">REMAINING</span>
+            <span class="gv" id="g-left">₹0</span>
+          </div>
+        </div>
+        <div class="gauge-pct" id="g-pct">Set a balance to begin</div>
+      </div>
+
+    </div>
+
+    <!-- Summary Strip -->
+    <div class="summary-strip" id="summary-strip" style="display:none">
+      <div class="sum-card c-indigo"><small>TOTAL BUDGET</small><div class="sv" id="s-budget">₹0</div></div>
+      <div class="sum-card c-rose">  <small>TOTAL SPENT</small> <div class="sv" id="s-spent">₹0</div></div>
+      <div class="sum-card c-green"> <small>REMAINING</small>   <div class="sv" id="s-left">₹0</div></div>
+      <div class="sum-card c-amber"> <small>CATEGORIES</small>  <div class="sv" id="s-cats">0</div></div>
+    </div>
+
+    <!-- Add Expense Card -->
+    <div class="card add-card">
+      <div class="section-title">➕ Add an Expense</div>
+      <div class="add-grid">
+
+        <!-- Left: Category Picker -->
+        <div>
+          <div style="font-size:.8rem;color:#64748b;font-weight:600;margin-bottom:8px;">Select Category</div>
+          <div class="chips" id="chips"></div>
+          <div class="add-cat-row" style="margin-top:8px;">
+            <input type="text" id="new-cat" class="no-prefix" placeholder="+ New category name" maxlength="24">
+            <button class="btn-outline" id="add-cat-btn" style="padding:10px 16px;white-space:nowrap;border-radius:10px;font-weight:600;cursor:pointer;">Add</button>
+          </div>
+        </div>
+
+        <!-- Right: Expense Details Form -->
+        <div class="expense-form">
+          <div style="font-size:.8rem;color:#64748b;font-weight:600;margin-bottom:0;">Expense Details</div>
+          <div class="input-wrap">
+            <span class="input-prefix" style="color:#94a3b8;font-size:.9rem;">📝</span>
+            <input type="text" id="item-name" placeholder="What did you buy? (e.g. Groceries, Bus ticket)">
+          </div>
+          <div class="arrow-row">
+            <div class="input-wrap" style="flex:1.2;">
+              <span class="input-prefix">₹</span>
+              <input type="number" id="item-price" min="0.01" step="0.01" placeholder="Price">
+            </div>
+            <div class="input-wrap" style="flex:1.1;">
+              <input type="date" id="item-date" class="no-prefix" style="padding:11px 10px;font-size:.85rem;color:#475569;" title="Expense Date">
+            </div>
+            <span class="arrow-mid">→</span>
+            <div class="to-cat" id="to-cat-label">Select category</div>
+          </div>
+          <button class="btn-primary btn-full" id="add-btn" style="padding:12px;border-radius:10px;border:none;font-weight:700;font-size:1rem;cursor:pointer;">
+            Add Expense
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Expense Cards Grid -->
+    <div class="cats-header">
+      <h2>📂 All Categories</h2>
+      <small>Click a card to see items</small>
+    </div>
+    <div class="cats-grid" id="cats-grid"></div>
+
+  </div>
+
+  <!-- ========================================================================
+       MODAL: Monthly Graph & Trend Analytics
+       ======================================================================== -->
+  <div class="modal-overlay" id="graph-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">
+          <h2><span>📊</span> <span id="m-user-title">User</span>'s Monthly Expense Graph</h2>
+          <p>Interactive month-by-month spending trends, category breakdowns, and transaction history</p>
+        </div>
+        <button class="modal-close" id="close-modal-btn" title="Close">✕</button>
+      </div>
+
+      <!-- Controls: Year & Month Selectors -->
+      <div class="graph-controls">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <label style="margin:0;font-size:.85rem;font-weight:700;color:#64748b;" for="year-select">Year:</label>
+          <select class="month-select" id="year-select"></select>
+
+          <label style="margin:0;font-size:.85rem;font-weight:700;color:#64748b;margin-left:8px;" for="month-select">Month:</label>
+          <select class="month-select" id="month-select"></select>
+        </div>
+
+        <div style="display:flex;gap:8px;">
+          <button class="qbtn" id="sample-data-btn" title="Populate demo data across past months to see how graph looks">⚡ Demo Past Months</button>
+        </div>
+      </div>
+
+      <!-- Chart Container -->
+      <div class="chart-box">
+        <div class="chart-header">
+          <span class="chart-title"><span>📈</span> Spending Analysis (<span id="chart-view-label" style="color:#a5b4fc;">Glow Bars</span>)</span>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <div class="view-tabs" id="chart-tabs">
+              <button class="vtab active" data-view="bars">📊 Glow Bars</button>
+              <button class="vtab" data-view="wave">🌊 Neon Wave</button>
+              <button class="vtab" data-view="donut">🍩 Category Donut</button>
+            </div>
+            <span class="chart-stat" id="chart-annual-total">Total: ₹0</span>
+          </div>
+        </div>
+        <div class="svg-chart-wrap" id="chart-container" style="position:relative;">
+          <!-- SVG Chart dynamically injected -->
+        </div>
+        <div id="chart-tooltip" class="chart-tooltip"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;flex-wrap:wrap;gap:8px;">
+          <span style="font-size:.78rem;color:#94a3b8;">
+            💡 Click any bar or node to inspect that month's details below
+          </span>
+          <span id="chart-insight-badge" style="font-size:.75rem;padding:3px 10px;border-radius:20px;font-weight:700;background:rgba(99,102,241,0.2);color:#a5b4fc;border:1px solid rgba(99,102,241,0.3);">
+            ⚡ Interactive Mode
+          </span>
+        </div>
+      </div>
+
+      <!-- Metric Cards for Selected Month -->
+      <div class="m-stats-grid">
+        <div class="m-stat-card">
+          <small id="stat-month-label">Spent in Selected Month</small>
+          <div class="mv" id="stat-month-spent" style="color:#6366f1;">₹0</div>
+        </div>
+        <div class="m-stat-card">
+          <small>Total Transactions</small>
+          <div class="mv" id="stat-month-count">0 items</div>
+        </div>
+        <div class="m-stat-card">
+          <small>Top Spending Category</small>
+          <div class="mv" id="stat-month-top" style="font-size:1.05rem;">—</div>
+        </div>
+        <div class="m-stat-card">
+          <small>Share of Annual Spend</small>
+          <div class="mv" id="stat-month-share" style="color:#10b981;">0%</div>
+        </div>
+      </div>
+
+      <!-- Month Category & Items Details Section -->
+      <div class="m-detail-section">
+        <div class="m-detail-header">
+          <div class="m-detail-title" id="m-detail-title">Category Breakdown for Selected Month</div>
+          <small id="m-detail-count" style="color:#94a3b8;font-weight:600;">0 items</small>
+        </div>
+
+        <div class="m-cats-list" id="m-cats-list"></div>
+
+        <div style="font-size:.8rem;font-weight:700;color:#64748b;margin:16px 0 8px;text-transform:uppercase;letter-spacing:.05em;">
+          Itemized Expenses
+        </div>
+        <div class="m-items-table" id="m-items-list"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast"></div>
+
+  <!-- Application Logic -->
+  <script src="script.js"></script>
+</body>
+</html>
